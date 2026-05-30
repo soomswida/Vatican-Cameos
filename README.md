@@ -10,8 +10,8 @@ flowchart LR
     subgraph T["3-Layered Structure"]
         direction TB
         L1["<b>DEFAULT</b><br/>Input: ８kHZ<br/>Smallest Model<br/>→ High recall<br/>→ Minimize FN"]
-        L2["<b>IDLE</b><br/>Input: ８kHZ<br/>Middle Model<br/>→ Balanced"]
-        L3["<b>STANDBY</b><br/>Input: ８kHZ<br/>Biggest Model<br/>→ High precision<br/>→ Minimize FP"]
+        L2["<b>IDLE</b><br/>Input: 16kHZ<br/>Middle Model<br/>→ Balanced"]
+        L3["<b>STANDBY</b><br/>Input: 16kHZ<br/>Biggest Model<br/>→ High precision<br/>→ Minimize FP"]
     end
 
     L1 -->|trigger| L2
