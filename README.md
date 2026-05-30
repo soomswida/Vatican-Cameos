@@ -1,5 +1,10 @@
 # Project Vatican Cameos
 
+Mobile Computing and Its Applications (Spring 2026)
+Mini-Project
+
+**2018-11580 Kim, Kyoheon**
+
 Vatican Cameos is an on-device emergency alert system designed to protect users who cannot interact with their device through conventional means — whether due to physical disability, situational incapacitation, or hostile conditions such as robbery, assault, or coercion. When a user is unable to unlock their phone, tap a screen, or draw attention to themselves, Vatican Cameos provides a covert, voice-triggered pathway to dispatch emergency services and alert designated contacts with the user's real-time location and a pre-written distress description.
 
 The core reliability challenge — the asymmetric cost between false alarms and missed emergencies — is addressed through a three-layered safe-net architecture. Rather than relying on a single detection threshold, the system requires sequential confirmation across three keyword stages before any emergency action is taken. Each intermediate layer provides tactile feedback (vibration) so the user can verify the system is responding, and every layer supports both voice and hardware-interrupt abort paths, allowing the user to stand down at any point without triggering a false alarm. This staged confirmation protocol dramatically suppresses false positives while preserving the high recall that a safety-critical application demands.
