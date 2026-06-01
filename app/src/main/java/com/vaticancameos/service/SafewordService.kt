@@ -33,17 +33,6 @@ import com.vaticancameos.statemachine.SafewordState
 import com.vaticancameos.statemachine.SafewordStateMachine
 import com.vaticancameos.statemachine.StateTransition
 
-/**
- * Vatican Cameos — Foreground Service
- *
- * Android에서 백그라운드 상시 마이크 접근은 Foreground Service 필수.
- * 서비스 시작 시 세 컴포넌트(StateMachine, AudioPipeline, KeywordClassifier,
- * EmergencyDispatcher)를 초기화하고 메인 추론 루프를 구동.
- *
- * 외부 통신:
- * - Intent 액션을 통한 명령 수신 (Start/Stop/HW interrupt/키워드 시뮬레이션)
- * - companion object의 StateFlow를 통한 UI 상태 노출
- */
 class SafewordService : Service() {
 
     private val TAG = "SafewordService"
@@ -93,7 +82,7 @@ class SafewordService : Service() {
         setupCallbacks()
         classifier.loadAll()
 
-        _isRunning.value = true   // ★ UI에 실행 중 알림
+        _isRunning.value = true
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
@@ -102,7 +91,7 @@ class SafewordService : Service() {
             ACTION_STOP           -> stopSelf()
             ACTION_HW_INTERRUPT   -> stateMachine.dispatch(StateTransition.HW_INTERRUPT)
 
-            // 키워드 시뮬레이션 (UI 버튼)
+            // for the sake of demonstration
             ACTION_SIM_KEYWORD_L1 -> stateMachine.dispatch(StateTransition.KEYWORD_L1_DETECTED)
             ACTION_SIM_KEYWORD_L2 -> stateMachine.dispatch(StateTransition.KEYWORD_L2_DETECTED)
             ACTION_SIM_KEYWORD_L3 -> stateMachine.dispatch(StateTransition.KEYWORD_L3_DETECTED)
@@ -113,7 +102,7 @@ class SafewordService : Service() {
     override fun onDestroy() {
         Log.i(TAG, "Service destroyed")
 
-        _isRunning.value = false              // ★ UI에 정지 알림
+        _isRunning.value = false
         _currentState.value = SafewordState.DEFAULT
 
         audioPipeline.stop()
@@ -146,19 +135,17 @@ class SafewordService : Service() {
             audioPipeline.frames.collectLatest { frame ->
                 val currentState = stateMachine.state.value
 
-                // ACTION 상태에선 추론 불필요
                 if (currentState == SafewordState.ACTION) return@collectLatest
 
                 val result = classifier.classify(
-                    melSpectrogram = frame.melSpectrogram,
-                    melBins        = frame.melBins,
-                    timeSteps      = frame.timeSteps,
-                    state          = currentState
+                    frame.melSpectrogram,
+                    frame.melBins,
+                    frame.timeSteps,
+                    frame.state
                 )
 
                 if (!result.isKeyword) return@collectLatest
 
-                // 키워드 매칭 → 전환 결정
                 val config = stateMachine.currentConfig()
                 val transition = when {
                     currentState == SafewordState.DEFAULT &&
