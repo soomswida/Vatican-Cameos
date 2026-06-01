@@ -28,10 +28,10 @@ enum class StateTransition {
 }
 
 data class SafewordConfig(
-    val keywordL1: String = "stomping",
-    val keywordL2: String = "gosh",
-    val keywordL3: String = "vatican cameos",
-    val deactivateL2: String = "clapping",
+    val keywordL1: String = "yes",
+    val keywordL2: String = "stop",
+    val keywordL3: String = "go",
+    val deactivateL2: String = "no",
 
     // Timeouts
     val idleTimeoutMs: Long = 30_000L,      // 30s idle → back to DEFAULT

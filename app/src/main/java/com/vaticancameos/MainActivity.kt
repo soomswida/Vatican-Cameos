@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
 
     private val permissionLauncher = registerForActivityResult(
         ActivityResultContracts.RequestMultiplePermissions()
-    ) { /* 결과 무시 — 사용자가 거부하면 해당 기능만 동작 안 함 */ }
+    ) { /*ignore*/ }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -102,7 +102,6 @@ fun MainScreen(
     onSimL2:         () -> Unit,
     onSimL3:         () -> Unit,
 ) {
-    // SafewordService의 companion object StateFlow를 직접 관찰
     val state     by SafewordService.currentState.collectAsState()
     val isRunning by SafewordService.isRunning.collectAsState()
 
